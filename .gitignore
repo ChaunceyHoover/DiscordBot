@@ -1,0 +1,5 @@
+# Nodejs files that don't need to be committed
+node_modules/
+
+# Sensitive info
+config.json

@@ -1,0 +1,28 @@
+{
+  "name": "memebot",
+  "version": "1.0.0",
+  "description": "My discord channel bot",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DealerNextDoor/MemeBot.git"
+  },
+  "keywords": [
+    "discord",
+    "discordjs",
+    "javascript"
+  ],
+  "author": "Chauncey",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/DealerNextDoor/MemeBot/issues"
+  },
+  "homepage": "https://github.com/DealerNextDoor/MemeBot#readme",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "nodemon": "^1.17.4"
+  }
+}
