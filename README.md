@@ -13,7 +13,7 @@ Installing
 
 ```
 git clone [this repo or your own fork]
-npm init
-npm install --save
+cd MemeBot
+npm install
 npm start
 ```
