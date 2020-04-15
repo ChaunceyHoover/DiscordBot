@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { prefix, token, owner, notify } = require('./config.json');
+const { prefix, token } = require('./config.json');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -14,45 +14,6 @@ for (const file of commandFiles) {
 		client.commands.set(cmd.name, cmd);
 	}
 }
-
-// Automatic live detection
-
-client.on('presenceUpdate', (oldMember, newMember) => {
-	// Verify check is for owner
-	if (newMember.user.id == owner) {
-		var op = oldMember.presence,
-			np = newMember.presence;
-
-		// Get channel to send streaming notification(s) to
-		var textChannels = newMember.client.channels.find('name', 'Text Channels')
-		if (textChannels == null) {
-			console.log("Error trying to notify users; could not find text channels");
-			return;
-		}
-		var notifyChannel = textChannels.guild.channels.find('name', notify.channel);
-		if (notifyChannel == null) {
-			console.log("Error finding notification channel '" + notify.channel + "'");
-			return;
-		}
-		var notifyRole = notifyChannel.guild.roles.find('name', notify.role);
-		if (notifyRole == null) {
-			console.log("Error finding notification role '" + notify.role + "'. Using `@here` instead.");
-		}
-
-		// Check if stream starting
-		if ((op.game == null || op.game.type !== 1) && np.game != null && np.game.type === 1)
-			if (notifyRole == null)
-				notifyChannel.send("@here Going live! " +
-					(notify.nicknames[Math.floor(Math.random() * notify.nicknames.length)]) +
-					" just started streaming.\nJoin him here: https://twitch.tv/SadFrogMemer");
-			else
-				notifyChannel.send(notifyRole.toString() + " Going live! " +
-					(notify.nicknames[Math.floor(Math.random() * notify.nicknames.length)]) +
-					" just started streaming.\nJoin him here: https://twitch.tv/SadFrogMemer");
-		else if (op.game != null && op.game.type === 1 && (np.game == null || np.game.type !== 1))
-			notifyChannel.send("Stream finished! " + (notify.nicknames[Math.floor(Math.random() * notify.nicknames.length)]) + " just finished yet another successful stream! Thank you to everyone who came out.");
-	}
-});
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}.`);
@@ -80,8 +41,7 @@ client.on('message', msg => {
 		client.commands.get(cmd).execute(msg, args);
 	} catch(err) {
 		console.error(err);
-		msg.reply('OOPSIE WOOPSIE!! Uwu We made a fucky wucky!! A wittle fucko boingo! The code monkeys at our headquarters are working VEWY HAWD to fix this!');
-		msg.reply('(there was an error trying to run this command. I\'m sorry. Memer made me say that.)');
+		msg.reply('There was an error trying to run this command. Please repeatedly spam the mods until they notice it. Thank you.')
 	}
 });
 

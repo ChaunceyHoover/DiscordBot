@@ -16,5 +16,7 @@ Installing
 git clone ...
 cd MemeBot
 npm install
+mv config.json.tmpl config.json
+# edit config.json with your favorite editor to set command prefix + bot token
 npm start
 ```
