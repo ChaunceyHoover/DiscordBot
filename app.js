@@ -11,7 +11,7 @@ const commandFiles = fs.readdirSync('./commands');
 
 // Adds each command in the `./commands` folder to the bot
 for (const file of commandFiles) {
-	if (file !== "cmd.tmpl.js") {
+	if (file.toLowerCase().endsWith('.js')) {
 		const cmd = require(`./commands/${file}`);
 		client.commands.set(cmd.name, cmd);
 	}
@@ -50,7 +50,8 @@ client.on('message', msg => {
 		client.commands.get(cmd).execute(msg, args);
 	} catch(err) {
 		console.error(err);
-		msg.reply('There was an error trying to run this command. Please repeatedly spam the mods until they notice it. Thank you.')
+		msg.reply('There was an error trying to run this command. Please repeatedly spam the mods until they notice it. Thank you.');
+		msg.reply(`\`\`\`\n${err}\`\`\``);
 	}
 });
 

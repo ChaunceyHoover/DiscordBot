@@ -1,0 +1,10 @@
+// Rename file to end with `.js` to make bot load it automatically
+
+module.exports = {
+	name: 'COMMAND',
+	description: 'DESCRIPTION',
+	permission: 0, // Permission level
+	execute(msg) {
+		//msg.channel.send('Hello world');
+	}
+};
