@@ -1,0 +1,47 @@
+html, body {
+	height: 100%;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+}
+
+/** HEADER */
+
+header {
+	height: 48px;
+}
+
+nav {
+	background: #0d5bad;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 4px 4px 4px 12px;
+	align-items: center;
+}
+
+nav img {
+	height: 60%;
+}
+
+
+
+/** BODY */
+
+main {
+	flex: auto;
+	background-color: lightgrey;
+}
+
+/** FOOTER */
+
+footer {
+	background: #0d5bad;
+	height: 24px;
+}
