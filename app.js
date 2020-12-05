@@ -70,7 +70,7 @@ client.login(process.env.TOKEN);
 
 // Start web app
 const server = express();
-const port = 443;
+const port = process.env.PORT || 80;
 
 // Set view engine to pug
 server.set('views', path.join(__dirname, 'views'));
