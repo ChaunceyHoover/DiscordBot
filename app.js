@@ -1,6 +1,10 @@
 // Discord.js imports
 const fs = require('fs');
 const Discord = require('discord.js');
+
+if (!fs.existsSync('./config.json'))
+	fs.copyFileSync('./config.json.tmpl', './config.json');
+
 let { prefix } = require('./config.json');
 
 // Web app
