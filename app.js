@@ -1,7 +1,7 @@
 // Discord.js imports
 const fs = require('fs');
 const Discord = require('discord.js');
-const { port, prefix, token } = require('./config.json');
+let { prefix } = require('./config.json');
 
 // Web app
 const express = require('express');
@@ -62,11 +62,11 @@ client.on('message', msg => {
 });
 
 // Starts the bot
-client.login(token);
+client.login(process.env.TOKEN);
 
 // Start web app
 const server = express();
-const port = port || 3000;
+const port = 443;
 
 // Set view engine to pug
 server.set('views', path.join(__dirname, 'views'));
