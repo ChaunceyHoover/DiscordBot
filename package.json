@@ -4,7 +4,7 @@
   "description": "A discord bot to integrate with Brawl Stars for the Hot Pizza club",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
