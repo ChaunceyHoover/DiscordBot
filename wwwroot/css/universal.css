@@ -57,7 +57,14 @@ nav #right button {
 
 main {
 	flex: auto;
+	display: flex;
+	align-items: center;
 	background-color:#2F3136;
+}
+
+main h1 {
+	color: lightgray;
+	text-align: center;
 }
 
 /** FOOTER */
