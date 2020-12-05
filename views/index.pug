@@ -5,8 +5,13 @@ html(lang="en")
 	body
 		header
 			nav
-				img(src="/img/logo.svg", alt="GDB")
+				div(id="left")
+					img(src="https://discordapp.com/assets/da3651e59d6006dfa5fa07ec3102d1f3.svg", alt="GDB")
+					h1 SmileCord
+				div(id="right")
+					button(type="button").btn.btn-light Login
 		main
 		footer
+			p &copy; 2020 SadFrogMemer
 		include scripts.pug
 		script(type="text/javascript", src="/js/index.js")

@@ -10,6 +10,11 @@ body {
 	flex-direction: column;
 }
 
+/*
+Discord normal background: #36393F
+Discord settings background: #2F3136
+*/
+
 /** HEADER */
 
 header {
@@ -17,31 +22,57 @@ header {
 }
 
 nav {
-	background: #0d5bad;
+	background: #753d8b;
 	height: 100%;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	padding: 4px 4px 4px 12px;
+	padding: 0.2rem 0.2rem 0.2rem 1rem;
+	align-items: center;
+	border-bottom: 4px solid #502d5e;
+}
+
+nav #left {
+	height: 80%;
+	display: flex;
 	align-items: center;
 }
 
-nav img {
-	height: 60%;
+nav #left img {
+	height: 100%;
 }
 
+nav #left h1 {
+	color: lightgray;
+	font-size: 2rem;
+	font-variant: small-caps;
+	padding-left: 1rem;
+}
 
+nav #right button {
+	margin: 0.5rem 1rem;
+}
 
 /** BODY */
 
 main {
 	flex: auto;
-	background-color: lightgrey;
+	background-color:#2F3136;
 }
 
 /** FOOTER */
 
 footer {
-	background: #0d5bad;
+	background: #723f86;
+	border-top: 2px solid #502d5e;
+	display: flex;
+	align-items: center;
+	justify-content: end;
 	height: 24px;
+}
+
+footer p {
+	color: lightgray;
+	margin: auto 1rem;
+	font-size: 0.8rem;
 }
