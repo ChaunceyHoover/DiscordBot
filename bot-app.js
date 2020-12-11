@@ -166,9 +166,7 @@ setInterval(function() {
 									let _msg = _channel.messages.cache.get(row.MessageId);
 									if (_msg) {
 										let total = _msg.reactions.cache.get('🔞').count;
-										let _temp = new Date();
-										_temp.setHours(_temp.getHours() + 5);
-										let seconds = (_temp - row.Time) / 1000;
+										let seconds = (new Date() - row.Time) / 1000;
 										console.log(seconds / 60);
 										console.log(total * .5);
 										if (seconds / 60 > total * .5) {
