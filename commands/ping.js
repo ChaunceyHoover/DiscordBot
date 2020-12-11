@@ -3,6 +3,6 @@ module.exports = {
 	description: 'Simple ping command to make sure bot is functioning.',
 	permission: 0,
 	execute(msg) {
-		msg.channel.send(':underage:');
+		msg.channel.send(`(${(new Date()).toDateString()})`);
 	}
 };
