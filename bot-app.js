@@ -126,7 +126,7 @@ client.on('messageReactionAdd', (reaction, user) => {
 		 *         (where jail_time() = total number of minutes at current reaction count)
 		 */
 		let _total = msg.reactions.cache.get('🔞').count;
-		if (_total >= 1) { // change to 3
+		if (_total >= 3) { // TEMPORARILY HARD CODED
             pool.getConnection()
                 .then(conn => {
 					let _member = msg.member;
