@@ -65,7 +65,7 @@ client.on('ready', () => {
 				.then(_ => conn.query('DELETE FROM Horny WHERE Id > 0'))
 				.then(_ => conn.release())
 				.catch(err => {
-					console.log(`[START] ${err}`);
+					console.error(`[START] ${err}`);
 					conn.release();
 				});
 		});
@@ -144,10 +144,10 @@ client.on('messageReactionAdd', (reaction, user) => {
                         .then(_ => conn.release())
                         .catch(err => {
 							conn.release();
-							console.log(`[JAIL] ${err}`);
+							console.error(`[JAIL] ${err}`);
                         });
                 }).catch(dbErr => {
-                    console.log(`[DB] ${dbErr}`);
+                    console.error(`[DB] ${dbErr}`);
                 });
         }
 	}
@@ -168,8 +168,18 @@ setInterval(function() {
 									let _msg = _channel.messages.cache.get(row.MessageId);
 									if (_msg) {
 										let total = _msg.reactions.cache.get('🔞').count;
-										let seconds = (new Date() - row.Time) / 1000;
-										if (seconds / 60 > total * .5) {
+										let minutes = (new Date() - row.Time) / 1000 / 60;
+										let sentenceTime = 15;
+										if (total >= 3)
+											sentenceTime = 5;
+										else if (total >= 4)
+											sentenceTime = 15;
+										else if (total >= 5)
+											sentenceTime = 30;
+										else
+											sentenceTime = 60;
+
+										if (minutes > sentenceTime) {
 											/** TEMPORARY HARD CODING */
 											let horny;
 											if (_guild.id == "551632336899407901") {
@@ -191,7 +201,7 @@ setInterval(function() {
 				})
 				.catch(err => {
 					conn.release();
-					console.log(`[LOOP] ${err}`);
+					console.error(`[LOOP] ${err}`);
 				});
 		})
 }, interval * 1000);
