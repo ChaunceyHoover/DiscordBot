@@ -3,3 +3,4 @@ node_modules/
 
 # Sensitive info
 config.json
+.env
