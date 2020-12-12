@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 // Discord.js imports
 const fs = require('fs');
 const Discord = require('discord.js');
@@ -126,7 +128,7 @@ client.on('messageReactionAdd', (reaction, user) => {
 		 *         (where jail_time() = total number of minutes at current reaction count)
 		 */
 		let _total = msg.reactions.cache.get('🔞').count;
-		if (_total >= 3) { // TEMPORARILY HARD CODED
+		if (_total >= 1) { // TEMPORARILY HARD CODED
             pool.getConnection()
                 .then(conn => {
 					let _member = msg.member;
@@ -167,10 +169,7 @@ setInterval(function() {
 									if (_msg) {
 										let total = _msg.reactions.cache.get('🔞').count;
 										let seconds = (new Date() - row.Time) / 1000;
-										console.log(seconds / 60);
-										console.log(total * .5);
 										if (seconds / 60 > total * .5) {
-											console.log('done');
 											/** TEMPORARY HARD CODING */
 											let horny;
 											if (_guild.id == "551632336899407901") {
