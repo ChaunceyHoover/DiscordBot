@@ -1,8 +1,8 @@
 Generic Discord Bot
 =========
 
-Just a simple discord bot for my server and possibly other servers I enjoy.
+Simple discord bot for basic "moderation" functions via reactions
 
 ### Commands
 
-* !ping - Simple test to make sure the bot is working
+* !version - Simple test to make sure the bot is working

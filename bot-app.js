@@ -16,6 +16,8 @@ const pool = mariadb.createPool({
     connectionLimit: 2
 });
 
+let dbHelper = require('./lib/database-helper');
+
 if (!fs.existsSync('./config.json'))
 	fs.copyFileSync('./config.json.tmpl', './config.json');
 
@@ -38,37 +40,7 @@ for (const file of commandFiles) {
 
 // Basically the 'onStart' method - this runs when it successfully connects to discord and initiates itself
 client.on('ready', () => {
-	pool.getConnection()
-		.then(conn => {
-			conn.query('SELECT UserId, GuildId FROM Horny')
-				// bot can't manage messages sent before it started, so only choice is to free people
-				.then(rows => {
-					if (rows.length > 0) {
-						rows.forEach(function(row) {
-							let guild = client.guilds.cache.get(row.GuildId);
-							if (guild) {
-								guild.members.fetch({user: row.UserId, force: true})
-									.then(function(member) {
-										/** TEMPORARY HARD CODING */
-										let horny;
-										if (guild.id == "551632336899407901") {
-											horny = guild.roles.cache.get("555103123811598338");
-										} else {
-											horny = guild.roles.cache.get("786808425237577729");
-										}
-										member.roles.remove(horny);
-									});
-							}
-						});
-					}
-				})
-				.then(_ => conn.query('DELETE FROM Horny WHERE Id > 0'))
-				.then(_ => conn.release())
-				.catch(err => {
-					console.error(`[START] ${err}`);
-					conn.release();
-				});
-		});
+	dbHelper.init(client);
 	console.log(`Logged in as ${client.user.tag}.`);
 });
 
@@ -108,15 +80,6 @@ client.on('message', msg => {
 client.on('messageReactionAdd', (reaction, user) => {
 	let msg = reaction.message, emoji = reaction.emoji;
 
-	let horny;
-
-	/** TEMPORARY HARD CODING */
-	if (msg.guild.id == "551632336899407901") {
-		horny = msg.guild.roles.cache.get("555103123811598338");
-	} else {
-		horny = msg.guild.roles.cache.get("786808425237577729");
-	}
-
 	if (emoji.name == '🔞') {
 		/**
 		 * FINAL VERSION:
@@ -128,82 +91,20 @@ client.on('messageReactionAdd', (reaction, user) => {
 		 *         (where jail_time() = total number of minutes at current reaction count)
 		 */
 		let _total = msg.reactions.cache.get('🔞').count;
-		if (_total >= 1) { // TEMPORARILY HARD CODED
-            pool.getConnection()
-                .then(conn => {
-					let _member = msg.member;
-                    conn.query(`SELECT UserId, Time FROM Horny WHERE UserId = ?`, [_member.id])
-                        .then(rows => {
-                            if (rows.length == 0) {
-								conn.query(
-									"INSERT INTO Horny (UserId, MessageId, ChannelId, GuildId) VALUES (?, ?, ?, ?)",
-									[_member.id, msg.id, msg.channel.id, msg.guild.id]);
-								_member.roles.add(horny);
-							}
-                        })
-                        .then(_ => conn.release())
-                        .catch(err => {
-							conn.release();
-							console.error(`[JAIL] ${err}`);
-                        });
-                }).catch(dbErr => {
-                    console.error(`[DB] ${dbErr}`);
-                });
-        }
-	}
+
+		dbHelper.getThresholds(msg.guild.id)
+			.then(thresholds => {
+				if (_total >= thresholds[0].Count) {
+					dbHelper.punishUser(msg);
+				}
+			})
+			.catch(console.error);
+    }
 });
 
 // Checks every `interval` seconds to see if anyone needs freed
 setInterval(function() {
-	pool.getConnection()
-		.then(conn => {
-			conn.query("SELECT Id, UserId, MessageId, ChannelId, GuildId, Time FROM Horny")
-				.then(rows => {
-					if (rows.length > 0)
-						rows.forEach(function(row) {
-							let _guild = client.guilds.cache.get(row.GuildId);
-							if (_guild) {
-								let _channel = _guild.channels.cache.get(row.ChannelId);
-								if (_channel) {
-									let _msg = _channel.messages.cache.get(row.MessageId);
-									if (_msg) {
-										let total = _msg.reactions.cache.get('🔞').count;
-										let minutes = (new Date() - row.Time) / 1000 / 60;
-										let sentenceTime = 15;
-										if (total >= 3)
-											sentenceTime = 5;
-										else if (total >= 4)
-											sentenceTime = 15;
-										else if (total >= 5)
-											sentenceTime = 30;
-										else
-											sentenceTime = 60;
-
-										if (minutes > sentenceTime) {
-											/** TEMPORARY HARD CODING */
-											let horny;
-											if (_guild.id == "551632336899407901") {
-												horny = _guild.roles.cache.get("555103123811598338");
-											} else {
-												horny = _guild.roles.cache.get("786808425237577729");
-											}
-
-											_guild.members.cache.get(row.UserId).roles.remove(horny);
-											conn.query("DELETE FROM Horny WHERE Id = ?", [row.Id]);
-										}
-									}
-								}
-							}
-						});
-				})
-				.then(_res => {
-					conn.release();
-				})
-				.catch(err => {
-					conn.release();
-					console.error(`[LOOP] ${err}`);
-				});
-		})
+	dbHelper.releaseUsers(client);
 }, interval * 1000);
 
 // Starts the bot
