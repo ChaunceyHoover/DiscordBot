@@ -1,7 +1,7 @@
 {
   "name": "discordbrawlbot",
-  "version": "1.1.5",
-  "description": "A discord bot to integrate with Brawl Stars for the Hot Pizza club",
+  "version": "1.1.6",
+  "description": "A discord bot for reaction-based moderation",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
@@ -12,10 +12,11 @@
   },
   "keywords": [
     "discordjs",
-    "nodejs",
-    "brawl-stars"
+    "express",
+    "pugjs",
+    "mariadb"
   ],
-  "author": "Chauncey Hoover, Just Frank",
+  "author": "Chauncey Hoover",
   "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/ChaunceyHoover/DiscordBrawlbot/issues"

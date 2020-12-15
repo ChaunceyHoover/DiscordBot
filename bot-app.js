@@ -28,11 +28,12 @@ for (const file of commandFiles) {
 // Basically the 'onStart' method - this runs when it successfully connects to discord and initiates itself
 client.on('ready', () => {
 	dbHelper.init(client).catch(console.error);
+	client.user.setPresence({ activity: { name: 'you be horny in main', type: 'WATCHING' }, status: 'idle' })
+		.catch(console.error);
 	console.log(`Logged in as ${client.user.tag}.`);
 });
 
 // onMessage - Runs every time someone sends a message
-// quick reference `msg`: https://discord.js.org/#/docs/main/stable/class/Message
 client.on('message', msg => {
 	if (!msg.content.startsWith(prefix) || msg.author.bot) return; // if message doesn't start with command prefix or is from bot, ignore
 
@@ -47,7 +48,7 @@ client.on('message', msg => {
 		for (var command of cmds) {
 			bot_reply += "`" + prefix + command.name + "` - " + command.description + "\n";
 		}
-		msg.reply(bot_reply);
+		msg.channel.send(bot_reply);
 		return;
 	}
 
@@ -68,24 +69,24 @@ client.on('messageReactionAdd', (reaction, user) => {
 	let msg = reaction.message, emoji = reaction.emoji;
 
 	if (emoji.name == '🔞') {
-		/**
-		 * FINAL VERSION:
-		 * 1. Check minimum number of votes set in database
-		 * 2. Check if `_total` is greater than or equal to that number
-		 * 3. If so, give user special role and insert user into table
-		 * 4. Every <15s/30s/45s/60s>, bot will check if there are any entries in table.
-		 *    4.1. If there are, bot will check if (current_time() - time_inserted) >= jail_time()
-		 *         (where jail_time() = total number of minutes at current reaction count)
-		 */
 		let _total = msg.reactions.cache.get('🔞').count;
 
 		dbHelper.getThresholds(msg.guild.id)
 			.then(thresholds => {
 				if (_total >= thresholds[0].Count) {
-					dbHelper.punishUser(msg).catch(console.error);
+					dbHelper.punishUser(msg)
+						.catch(err => { 
+							console.error(`[REACT1] ${err}`);
+							msg.reply('There was an error trying to run this command. Please repeatedly spam the mods until they notice it. Thank you.');
+							msg.channel.send(`\`\`\`\n${err}\`\`\``);
+						});
 				}
 			})
-			.catch(console.error);
+			.catch(err => { 
+				console.error(`[REACT2] ${err}`);
+				msg.reply('There was an error trying to run this command. Please repeatedly spam the mods until they notice it. Thank you.');
+				msg.channel.send(`\`\`\`\n${err}\`\`\``);
+			});
     }
 });
 
