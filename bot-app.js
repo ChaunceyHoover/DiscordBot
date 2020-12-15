@@ -4,7 +4,10 @@ require('dotenv').config()
 const fs = require('fs');
 const Discord = require('discord.js');
 
+// Helper module to move all database-based code in a separate file
 let dbHelper = require('./lib/database-helper');
+
+// Config stuff
 let { interval, prefix } = require('./config.json');
 
 // Create discord.js objects
