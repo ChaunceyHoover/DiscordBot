@@ -4,18 +4,6 @@ require('dotenv').config()
 const fs = require('fs');
 const Discord = require('discord.js');
 
-// Database
-const mariadb = require('mariadb');
-const connectionString = process.env.JAWSDB_MARIA_URL;
-const sqlRegex = /mysql:\/\/(\w+):(\w+)@(.*):(\d+)\/(\w+)/g;
-const result = sqlRegex.exec(connectionString);
-const pool = mariadb.createPool({
-    user: result[1], password: result[2],
-    host: result[3], port: Number.parseInt(result[4]), 
-    database: result[5],
-    connectionLimit: 2
-});
-
 let dbHelper = require('./lib/database-helper');
 
 if (!fs.existsSync('./config.json'))
