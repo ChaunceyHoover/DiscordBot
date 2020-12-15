@@ -28,7 +28,7 @@ for (const file of commandFiles) {
 
 // Basically the 'onStart' method - this runs when it successfully connects to discord and initiates itself
 client.on('ready', () => {
-	dbHelper.init(client);
+	dbHelper.init(client).catch(console.error);
 	console.log(`Logged in as ${client.user.tag}.`);
 });
 
@@ -83,7 +83,7 @@ client.on('messageReactionAdd', (reaction, user) => {
 		dbHelper.getThresholds(msg.guild.id)
 			.then(thresholds => {
 				if (_total >= thresholds[0].Count) {
-					dbHelper.punishUser(msg);
+					dbHelper.punishUser(msg).catch(console.error);
 				}
 			})
 			.catch(console.error);
@@ -92,7 +92,7 @@ client.on('messageReactionAdd', (reaction, user) => {
 
 // Checks every `interval` seconds to see if anyone needs freed
 setInterval(function() {
-	dbHelper.releaseUsers(client);
+	dbHelper.releaseUsers(client).catch(console.error);
 }, interval * 1000);
 
 // Starts the bot
