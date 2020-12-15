@@ -5,10 +5,6 @@ const fs = require('fs');
 const Discord = require('discord.js');
 
 let dbHelper = require('./lib/database-helper');
-
-if (!fs.existsSync('./config.json'))
-	fs.copyFileSync('./config.json.tmpl', './config.json');
-
 let { interval, prefix } = require('./config.json');
 
 // Create discord.js objects
