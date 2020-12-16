@@ -2,7 +2,7 @@
 
 module.exports = {
 	name: 'version',
-	description: 'Command to get bot version.',
+	description: 'Makes bot say what version it\'s running.',
 	permission: 0,
 	execute(msg) {
 		let package = JSON.parse(require('fs').readFileSync('package.json')).version
