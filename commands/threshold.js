@@ -8,22 +8,22 @@ module.exports = {
 	description: `Manages the server reaction thresholds for punishing users. \`${prefix}threshold help\` for more info.`,
 	permission: 1,
 	execute(msg, args) {
-        // Convert all arguments to lowercase
-        args.forEach(function(arg, index) { args[index] = arg.toLowerCase() });
+		// Convert all arguments to lowercase
+		args.forEach(function(arg, index) { args[index] = arg.toLowerCase() });
 
-        switch(args[0]) {
-            case 'add':
-            case 'set':
-                msg.channel.send('Add / set');
-                break;
-            case 'del':
-            case 'delete':
-            case 'remove':
-            case 'rem':
-                msg.channel.send('Delete / remove');
-                break;
-            case 'help':
-                msg.channel.send(
+		switch(args[0]) {
+			case 'add':
+			case 'set':
+				msg.channel.send('Add / set');
+				break;
+			case 'del':
+			case 'delete':
+			case 'remove':
+			case 'rem':
+				msg.channel.send('Delete / remove');
+				break;
+			case 'help':
+				msg.channel.send(
 `\`${prefix}threshold help\`
 Shows this command.
 
@@ -39,9 +39,9 @@ usage: ${prefix}threshold del 3
   Removes whatever threshold for 3 reactions is, if one exists.\`\`\`
 \`${prefix}threshold <site/web/website>\`
 Sends the URL for manging thresholds from a web interface.`);
-                break;
-            default:
-                msg.channel.send(`Invalid argument. Please try \`${prefix}threshold help\` for help.`)
-        }
+				break;
+			default:
+				msg.channel.send(`Invalid argument. Please try \`${prefix}threshold help\` for help.`)
+		}
 	}
 };
