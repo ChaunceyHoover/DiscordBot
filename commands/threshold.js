@@ -34,6 +34,11 @@ module.exports = {
 			case 'rem':
 				msg.channel.send('Not yet implemented. Try again later :slight_smile:');
 				break;
+			case 'web':
+			case 'site':
+			case 'website':
+				msg.channel.send('Also not implemented. Please try again later. :smile:');
+				break;
 			case 'help':
 				msg.channel.send(
 `\`${prefix}threshold help\`
