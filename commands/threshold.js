@@ -14,6 +14,19 @@ module.exports = {
 		switch(args[0]) {
 			case 'add':
 			case 'set':
+				if (args.length == 3) {
+					let count = Number.parseInt(args[1]);
+					let time = Number.parseInt(args[2]);
+					if (count <= 0) {
+						msg.reply('Invalid reaction amount. Please use a number bigger than 0.');
+					} else if (time <= 0) {
+						msg.reply('Invalid amount of minutes. Please use a number bigger than 0.');
+					} else {
+						dbHelper.setThreshold(msg.guild.id, new dbHelper.Threshold(count, time))
+							.then(result => msg.channel.send(`Successfully ${result == 0 ? 'set' : 'updated'} the punishment for ${count} reaction${count > 1 ? 's' : ''} to ${time} minute${time > 1 ? 's' : ''}`))
+							.catch(() => {});
+					}
+				}
 				msg.channel.send('Add / set');
 				break;
 			case 'del':
