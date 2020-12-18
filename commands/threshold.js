@@ -27,13 +27,12 @@ module.exports = {
 							.catch(() => {});
 					}
 				}
-				msg.channel.send('Add / set');
 				break;
 			case 'del':
 			case 'delete':
 			case 'remove':
 			case 'rem':
-				msg.channel.send('Delete / remove');
+				msg.channel.send('Not yet implemented. Try again later :slight_smile:');
 				break;
 			case 'help':
 				msg.channel.send(
