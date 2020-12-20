@@ -86,7 +86,7 @@ module.exports = {
 `\`${command} help\`
 Shows this command.
 
-\`${command} <list/view>
+\`${command} <list/view>\`
 Shows all thresholds for a server, if any exist.
 
 \`${command} <add/set> <count> <time>\`
