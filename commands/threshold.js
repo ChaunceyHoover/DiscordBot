@@ -38,6 +38,12 @@ module.exports = {
 					msg.reply(`Invalid number of arguments. ${properUsage}.`);
 				}
 				break;
+			case 'list':
+			case 'view':
+				dbHelper.viewThresholds(msg.guild.id)
+					.then(reply => msg.channel.send(reply))
+					.catch(err => { throw err; });
+				break;
 			case 'del':
 			case 'delete':
 			case 'remove':
@@ -80,7 +86,10 @@ module.exports = {
 `\`${command} help\`
 Shows this command.
 
-\`${command} <set/add> <count> <time>\`
+\`${command} <list/view>
+Shows all thresholds for a server, if any exist.
+
+\`${command} <add/set> <count> <time>\`
 Adds a new reaction threshold of 'count' reactions for 'time' minutes.
 \`\`\`
 usage: ${command} set 3 15
