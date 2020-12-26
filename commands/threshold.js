@@ -5,23 +5,24 @@ let { prefix } = require('../config.json');
 
 module.exports = {
 	name: 'threshold',
-	description: `Manages the server reaction thresholds for punishing users. \`${prefix}${module.exports.name} help\` for more info.`,
+	description: `Manages the server reaction thresholds for punishing users.`,
 	permission: 1,
 	execute(msg, args) {
 		// Convert all arguments to lowercase
 		args.forEach(function(arg, index) { args[index] = arg.toLowerCase() });
 		const command = prefix + module.exports.name;
-		const properUsage = `Proper usage: \`${command} add <count> <time>\``;
 
 		switch(args[0]) {
 			case 'add':
 			case 'set':
+				const properAddUsage = `Proper usage: \`${command} add <count> <time>\``;
+
 				if (args.length == 3) {
-					let count = Number.parseInt(args[1]);
-					let time = Number.parseInt(args[2]);
+					const count = Number.parseInt(args[1]);
+					const time = Number.parseInt(args[2]);
 
 					if (isNaN(count) || isNaN(time)) {
-						msg.reply(`Invalid arguments given. ${properUsage}.`);
+						msg.reply(`Invalid arguments given. ${properAddUsage}.`);
 						return;
 					}
 
@@ -35,7 +36,7 @@ module.exports = {
 							.catch(err => { throw err });
 					}
 				} else {
-					msg.reply(`Invalid number of arguments. ${properUsage}.`);
+					msg.reply(`Invalid number of arguments. ${properAddUsage}.`);
 				}
 				break;
 			case 'list':
@@ -69,11 +70,11 @@ module.exports = {
 			case 'delete':
 			case 'remove':
 			case 'rem':
-				let properUsage = `Proper usage: \`${command} del <count>\``;
+				const properDelUsage = `Proper usage: \`${command} del <count>\``;
 				if (args.length == 2) {
-					let count = Number.parseInt(args[1]);
+					const count = Number.parseInt(args[1]);
 					if (isNaN(count)) {
-						msg.reply(`Invalid arguments given. ${properUsage}.`);
+						msg.reply(`Invalid arguments given. ${properDelUsage}.`);
 						return;
 					}
 
@@ -86,15 +87,17 @@ module.exports = {
 									msg.channel.send(
 										`Successfully removed reaction threshold for ${count} reaction${count > 1 ? 's' : ''}`);
 								} else if (result == 1) {
+									msg.channel.send(`No threshold exists for **${count} reaction${count > 1 ? 's' : ''}**.`);
+								} else if (result == 2) {
 									msg.channel.send('No thresholds exist for this server. Please set some before trying to remove them.');
 								} else {
-									msg.channel.send('Well there wasn\'t an error but this situation wasn\'t covered sooooooo');
+									throw `Unexpected return code returned from \`${command} del ${count}\``;
 								}
 							})
 							.catch(err => { throw err });
 					}
 				} else {
-					msg.reply(`Invalid number of arguments. ${properUsage}.`);
+					msg.reply(`Invalid number of arguments. ${properDelUsage}.`);
 				}
 				break;
 			case 'web':
@@ -124,7 +127,8 @@ usage: ${command} del 3
 Sends the URL for manging thresholds from a web interface.`);
 				break;
 			default:
-				msg.channel.send(`Invalid argument. Please try \`${command} help\` for help.`)
+				msg.channel.send(`Invalid argument. Please try \`${command} help\` for help.`);
+				break;
 		}
 	}
 };
