@@ -1,6 +1,6 @@
 {
-  "name": "discordbrawlbot",
-  "version": "1.3.0",
+  "name": "discordbot",
+  "version": "1.3.0-BETA",
   "description": "A discord bot for reaction-based moderation",
   "main": "app.js",
   "scripts": {

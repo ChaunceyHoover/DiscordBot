@@ -3,6 +3,8 @@ const dbHelper = require('../lib/database-helper');
 
 let { prefix } = require('../config.json');
 
+const CHANNEL_REGEX = /<#(\d+)>/;
+
 module.exports = {
 	name: 'ignore',
 	description: 'Manages channels the bot will ignore commands from',
@@ -27,6 +29,27 @@ module.exports = {
                     .catch(err => { throw err; });
                 break;
             case 'add':
+                let properAddUsage = `Proper usage: \`${command} add <channel>\``;
+                if (args.length == 2) {
+                    let result = CHANNEL_REGEX.exec(args[1]);
+                    if (result) {
+                        let channelId = result[1];
+                        dbHelper.addIgnoreChannel(msg.guild.id, channelId)
+                            .then(status => {
+                                if (status == 0)
+                                    msg.channel.send(`Successfully added <#${channelId}> to ignored channels.`)
+                                else if (status == 1)
+                                    msg.channel.send(`Channel <#${channelId}> is already being ignored.`);
+                                else
+                                    throw `Unexpected return code returned from \`${command} add <#${channelId}>\``;
+                            })
+                            .catch(err => { throw err; });
+                    } else {
+                        msg.reply(`Invalid argument. Please specify a channel.\n${properAddUsage}`);
+                    }
+                } else {
+                    msg.reply(`Invalid arguments given. ${properAddUsage}`);
+                }
                 break;
             case 'del':
             case 'delete':
