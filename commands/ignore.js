@@ -29,7 +29,7 @@ module.exports = {
                     .catch(err => { throw err; });
                 break;
             case 'add':
-                let properAddUsage = `Proper usage: \`${command} add <channel>\``;
+                let properAddUsage = `${command} add <channel>`;
                 if (args.length == 2) {
                     let result = CHANNEL_REGEX.exec(args[1]);
                     if (result) {
@@ -41,20 +41,44 @@ module.exports = {
                                 else if (status == 1)
                                     msg.channel.send(`Channel <#${channelId}> is already being ignored.`);
                                 else
-                                    throw `Unexpected return code returned from \`${command} add <#${channelId}>\``;
+                                    throw `Unexpected return code returned from \`${properAddUsage.substr(0, properAddUsage.length - 9)}<#${channelId}>\``;
                             })
                             .catch(err => { throw err; });
                     } else {
-                        msg.reply(`Invalid argument. Please specify a channel.\n${properAddUsage}`);
+                        msg.reply(`Invalid argument. Please specify a channel. Proper usage: ${properAddUsage}.`);
                     }
                 } else {
-                    msg.reply(`Invalid arguments given. ${properAddUsage}`);
+                    msg.reply(`Invalid arguments given. Proper usage: ${properAddUsage}.`);
                 }
                 break;
             case 'del':
             case 'delete':
             case 'rem':
             case 'remove':
+                let properDelUsage = `${command} <del/delete/rem/remove> <channel>`;
+                if (args.length == 2) {
+                    let result = CHANNEL_REGEX.exec(args[1]);
+                    if (result) {
+                        let channelId = result[1];
+                        dbHelper.removeIgnoreChannel(msg.guild.id, channelId)
+                            .then(status => {
+                                if (status == 0) {
+                                    msg.channel.send(`Successfully removed <#${channelId}> from ignored channels`);
+                                } else if (status == 1) {
+                                    msg.channel.send(`This server has no channels being ignored. Please add some before trying to delete them. :slight_smile:`);
+                                } else if (status == 2) {
+                                    msg.channel.send(`The channel <#${channelId}> isn't currently being ignored? Did you really just try that? Crigne?????`);
+                                } else {
+                                    throw `Unexpected return code returned from \`${properDelUsage.substr(0, properDelUsage.length - 9)}<#${channelId}>\``;
+                                }
+                            })
+                            .catch(err => { throw err; });
+                    } else {
+                        msg.reply(`Invalid arguments given. Proper usage: ${properDelUsage}`);
+                    }
+                } else {
+                    msg.reply(`Invalid arguments given. ${properDelUsage}.`);
+                }
                 break;
             case 'help':
                 break;
