@@ -41,8 +41,29 @@ module.exports = {
 				break;
 			case 'list':
 			case 'view':
-				dbHelper.viewThresholds(msg.guild.id)
-					.then(reply => msg.channel.send(reply))
+				dbHelper.getThresholds(msg.guild.id)
+					.then(channels => {
+						if (channels.length == 0) {
+							msg.channel.send('No thresholds exist for this server. :fearful:');
+						} else {
+							let thresholds = '**Server Thresholds:**\n```';
+							for (let i = 0; i < channels.length; i++) {
+								let channel = channels[i];
+								let result = dbHelper.Threshold.REGEX.exec(channel.Value);
+								let threshold = new dbHelper.Threshold(result[1], result[2]);
+								if (result) {
+									thresholds += 
+										`${result[1]} react${dbHelper.plural(threshold.Count)} = ${result[2]} minute${dbHelper.plural(threshold.Time)}\n`;
+								} else {
+									console.error(`[VT1] Invalid threshold value ([ID:${channel.Id}]${channel.Value})`);
+									reject(`Invalid threshold value ([ID:${channel.Id}]${channel.Value})`);
+								}
+							}
+						
+							thresholds = thresholds.substr(0, thresholds.length - 1) + '```';
+							resolve(thresholds);
+						}
+					})
 					.catch(err => { throw err; });
 				break;
 			case 'del':
