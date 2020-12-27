@@ -81,7 +81,24 @@ module.exports = {
 				}
 				break;
 			case 'help':
+				msg.channel.send(
+`\`${command} help\`
+Shows this command
 
+\`${command} <channels|list>\`
+Shows all ignored channel(s) for this server
+
+\`${command} <add> <channel>\`
+Adds \`<channel>\` to the ignore list. Channels that are ignored will not be able to execute commands from this bot in that channel.
+\`\`\`
+usage: ${command} add #horny-jail
+  Adds the channel #horny-jail to the ignored list, where commands from this bot cannot be executed.\`\`\`
+\`${command} <del|delete|rem|remove> <channel>\`
+Removes \`<channel>\` from the ignore list, if it was being ignored.
+\`\`\`
+usage: ${command} del #horny-jail
+  Removes the channel #horny-jail from the ignored list, enabling commands to be executed in that channel.\`\`\`
+`);
 				break;
 			default:
 				msg.channel.send(`Invalid argument. Please try \`${command} help\` for help.`);
