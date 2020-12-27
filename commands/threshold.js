@@ -15,7 +15,7 @@ module.exports = {
 		switch(args[0]) {
 			case 'add':
 			case 'set':
-				const properAddUsage = `Proper usage: \`${command} add <count> <time>\``;
+				const properAddUsage = `Proper usage: \`${command} <add|set> <count> <time>\``;
 
 				if (args.length == 3) {
 					const count = Number.parseInt(args[1]);
@@ -68,9 +68,9 @@ module.exports = {
 				break;
 			case 'del':
 			case 'delete':
-			case 'remove':
 			case 'rem':
-				const properDelUsage = `Proper usage: \`${command} del <count>\``;
+			case 'remove':
+				const properDelUsage = `Proper usage: \`${command} <del|delete|rem|remove> <count>\``;
 				if (args.length == 2) {
 					const count = Number.parseInt(args[1]);
 					if (isNaN(count)) {
@@ -110,20 +110,20 @@ module.exports = {
 `\`${command} help\`
 Shows this command.
 
-\`${command} <list/view>\`
+\`${command} <list|view>\`
 Shows all thresholds for a server, if any exist.
 
-\`${command} <add/set> <count> <time>\`
+\`${command} <add|set> <count> <time>\`
 Adds a new reaction threshold of 'count' reactions for 'time' minutes.
 \`\`\`
 usage: ${command} set 3 15
   Creates a threshold for 3 reactions = 15 minute punishment. If a threshold for 3 reactions already exists, it is replaced with 15 minutes.\`\`\`
-\`${command} <del/delete/rem/remove> <count>\`
+\`${command} <del|delete|rem|remove> <count>\`
 Removes the reaction threshold for count reactions.
 \`\`\`
 usage: ${command} del 3
   Removes whatever threshold for 3 reactions is, if one exists.\`\`\`
-\`${command} <site/web/website>\`
+\`${command} <site|web|website>\`
 Sends the URL for manging thresholds from a web interface.`);
 				break;
 			default:

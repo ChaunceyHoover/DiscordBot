@@ -55,7 +55,7 @@ module.exports = {
 			case 'delete':
 			case 'rem':
 			case 'remove':
-				let properDelUsage = `${command} <del/delete/rem/remove> <channel>`;
+				let properDelUsage = `${command} <del|delete|rem|remove> <channel>`;
 				if (args.length == 2) {
 					let result = CHANNEL_REGEX.exec(args[1]);
 					if (result) {
@@ -81,6 +81,7 @@ module.exports = {
 				}
 				break;
 			case 'help':
+
 				break;
 			default:
 				msg.channel.send(`Invalid argument. Please try \`${command} help\` for help.`);
