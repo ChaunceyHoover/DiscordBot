@@ -42,26 +42,19 @@ module.exports = {
 			case 'list':
 			case 'view':
 				dbHelper.getThresholds(msg.guild.id)
-					.then(channels => {
-						if (channels.length == 0) {
+					.then(thresholds => {
+						if (thresholds.length == 0) {
 							msg.channel.send('No thresholds exist for this server. :fearful:');
 						} else {
-							let thresholds = '**Server Thresholds:**\n```';
-							for (let i = 0; i < channels.length; i++) {
-								let channel = channels[i];
-								let result = dbHelper.Threshold.REGEX.exec(channel.Value);
-								let threshold = new dbHelper.Threshold(result[1], result[2]);
-								if (result) {
-									thresholds += 
-										`${result[1]} react${dbHelper.plural(threshold.Count)} = ${result[2]} minute${dbHelper.plural(threshold.Time)}\n`;
-								} else {
-									console.error(`[VT1] Invalid threshold value ([ID:${channel.Id}]${channel.Value})`);
-									reject(`Invalid threshold value ([ID:${channel.Id}]${channel.Value})`);
-								}
+							let reply = '**Server Thresholds:**\n```';
+							for (let i = 0; i < thresholds.length; i++) {
+								let threshold = thresholds[i];
+								reply += 
+									`${threshold.Count} react${dbHelper.plural(threshold.Count)} = ${threshold.Time} minute${dbHelper.plural(threshold.Time)}\n`;
 							}
 						
-							thresholds = thresholds.substr(0, thresholds.length - 1) + '```';
-							resolve(thresholds);
+							reply = reply.substr(0, reply.length - 1) + '```';
+							msg.channel.send(reply);
 						}
 					})
 					.catch(err => { throw err; });
