@@ -7,7 +7,7 @@ const CHANNEL_REGEX = /<#(\d+)>/;
 
 module.exports = {
 	name: 'ignore',
-	description: 'Manages channels the bot will ignore commands from',
+	description: 'Manages channels the bot will ignore',
 	permission: 0, // Permission level
 	execute(msg, args) {
 		const command = prefix + module.exports.name;
@@ -89,15 +89,15 @@ Shows this command
 Shows all ignored channel(s) for this server
 
 \`${command} <add> <channel>\`
-Adds \`<channel>\` to the ignore list. Channels that are ignored will not be able to execute commands from this bot in that channel.
+Adds \`<channel>\` to the ignore list. Channels that are ignored will not be able to execute commands sent in that channel, nor will reaction-based moderation be enabled.
 \`\`\`
 usage: ${command} add #horny-jail
-  Adds the channel #horny-jail to the ignored list, where commands from this bot cannot be executed.\`\`\`
+  Adds the channel #horny-jail to the ignored list, where commands from this bot cannot be executed and reactions are ignored.\`\`\`
 \`${command} <del|delete|rem|remove> <channel>\`
 Removes \`<channel>\` from the ignore list, if it was being ignored.
 \`\`\`
 usage: ${command} del #horny-jail
-  Removes the channel #horny-jail from the ignored list, enabling commands to be executed in that channel.\`\`\`
+  Removes the channel #horny-jail from the ignored list, enabling commands to be executed in that channel and re-enabling reaction-based moderation.\`\`\`
 `);
 				break;
 			default:
