@@ -5,7 +5,7 @@ module.exports = {
 	description: 'Makes bot say what version it\'s running.',
 	permission: 0,
 	execute(msg) {
-		let package = JSON.parse(require('fs').readFileSync('package.json')).version
-		msg.channel.send(`Running version ${package}`);
+		const version = JSON.parse(require('fs').readFileSync('package.json')).version;
+		msg.channel.send(`Running version ${version}`);
 	}
 };
